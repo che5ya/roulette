@@ -1,0 +1,10 @@
+svg {
+	width: 500px;
+	height: 500px;
+	stroke: #37474f;
+	fill: #37474f;
+}
+
+#bg-circle {
+	fill: none;
+}
