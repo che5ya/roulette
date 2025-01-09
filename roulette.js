@@ -40,9 +40,17 @@ var colorPalette = [
 	'#607d8b',
 ];
 (function() {
-	var startColorIdx = Math.floor(Math.random() * colorPalette.length);
+	function getRandomInt(max) {
+		const array = new Uint32Array(1);
+		crypto.getRandomValues(array);
+		return array[0] % max;
+	}
+
+	var startColorIdx = getRandomInt(colorPalette.length);
+	// var startColorIdx = Math.floor(Math.random() * colorPalette.length);
 	var startColor = colorPalette[startColorIdx];
 	colorPalette.remove(startColor);
+
 	window.getColor = function(i) {
 		if (i == 0) return startColor;
 		return colorPalette[ Math.floor(startColorIdx + 4 * i) % colorPalette.length ];
@@ -382,6 +390,7 @@ function Roulette() {
 			drawArc({ x: R.center.x, y: R.center.y + 15, radius: window.radius,
 				rotation: R.rotation-45+180, angle: 180, color: getColor(1) }, '돌림판');
 		}
+
 		// pin
 		R.buffer.beginPath();
 		R.buffer.moveTo(R.size.width / 2    , R.center.y - window.radius + 20);
@@ -406,6 +415,7 @@ function Roulette() {
 			R.buffer.fillText(R.current, R.size.width / 2, R.center.y - window.radius - 7);
 			//R.buffer.shadowBlur = 0;
 		}
+
 		// 가운데 점
 		// R.buffer.beginPath();
 		// R.buffer.arc(R.center.x, R.center.y + 15, 3, 0, 2 * Math.PI);
@@ -419,9 +429,16 @@ function Roulette() {
 		R.angularDamping = 0;
 		delete R.stopping;
 	}
+
 	R.Stop = function() {
+		const getRandomFraction = function () {
+			const array = new Uint32Array(1);
+			crypto.getRandomValues(array);
+			return array[0] / 0xFFFFFFFF; // 0과 1 사이의 난수 생성
+		}
+
 		R.stopping = Date.now();
-		R.angularDamping = 360 * (0.5 + 0.1 * Math.random()); // 360 * (2 + Math.random());
+		R.angularDamping = 360 * (0.5 + 0.1 * getRandomFraction()); // 360 * (2 + Math.random());
 	}
 
 	OnStart();
